@@ -39,10 +39,10 @@ export default function AnalyzerForm({ type, onSubmit, placeholder, children }) 
           placeholder={placeholder}
           rows={6}
           className={clsx(
-            'w-full px-4 py-3 rounded-xl border bg-white dark:bg-dark-100',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+            'w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-dark-100',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
             'resize-none transition-all',
-            error ? 'border-danger' : 'border-gray-200 dark:border-gray-800'
+            error ? 'border-danger' : 'border-gray-300 dark:border-gray-600'
           )}
         />
         {error && (

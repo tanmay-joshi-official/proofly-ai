@@ -65,7 +65,7 @@ export default function EmailPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-dark-100 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-800"
+            className="bg-white dark:bg-dark-100 rounded-2xl p-6 shadow-lg border-2 border-gray-300 dark:border-gray-600"
           >
             <div className="flex items-center gap-2 mb-4">
               <Shield className="text-primary-500" size={20} />

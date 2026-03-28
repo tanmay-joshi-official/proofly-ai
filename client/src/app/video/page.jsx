@@ -68,7 +68,7 @@ export default function VideoPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="lg:col-span-2 bg-white dark:bg-dark-100 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-800"
+            className="lg:col-span-2 bg-white dark:bg-dark-100 rounded-2xl p-6 shadow-lg border-2 border-gray-300 dark:border-gray-600"
           >
             <div className="flex items-center gap-2 mb-4">
               <Shield className="text-primary-500" size={20} />
@@ -83,7 +83,7 @@ export default function VideoPage() {
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   placeholder="Paste video URL (YouTube, TikTok, etc.)..."
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
 
@@ -102,7 +102,7 @@ export default function VideoPage() {
                   onChange={(e) => setVideoUrl(e.target.value)}
                   placeholder="Describe what you see in the video: who appears, what is being said, context, etc..."
                   rows={5}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
                 />
               </div>
 
