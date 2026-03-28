@@ -51,28 +51,6 @@ cd ../client
 npm install
 ```
 
-### Configuration
-
-1. **Configure Environment Variables**
-
-```bash
-cd server
-cp .env.example .env
-```
-
-Edit `.env` file:
-```env
-MINIMAX_API_KEY=your-minimax-api-key-here
-MINIMAX_API_URL=https://api.minimax.chat/v1/text/chatcompletion_pro
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/proofly-ai
-```
-
-2. **Get MiniMax API Key**
-   - Visit [MiniMax Platform](https://platform.minimax.chat/)
-   - Create an account and generate an API key
-   - Add it to your `.env` file
-
 ### Running the Application
 
 **Terminal 1 - Backend Server:**
@@ -153,110 +131,6 @@ proofly-ai/
 └── package.json
 ```
 
-## 🔌 API Endpoints
-
-### Email Analysis
-```bash
-POST http://localhost:5000/api/analyze-email
-Content-Type: application/json
-
-{
-  "email": "Your email content here..."
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "trustScore": 85,
-    "riskLevel": "Low",
-    "keyRedFlags": [],
-    "finalVerdict": "Content appears authentic",
-    "recommendedAction": "Safe to engage",
-    "explanation": "Detailed analysis...",
-    "internetInsights": {
-      "similarCases": "No similar cases found",
-      "credibility": "Content appears legitimate",
-      "userReports": "No complaints reported",
-      "overallSentiment": "Positive"
-    }
-  }
-}
-```
-
-### Link Analysis
-```bash
-POST http://localhost:5000/api/analyze-link
-Content-Type: application/json
-
-{
-  "link": "https://example.com"
-}
-```
-
-### Image Analysis (with AI Detection)
-```bash
-POST http://localhost:5000/api/analyze-image
-Content-Type: application/json
-
-{
-  "description": "Image description or base64 data"
-}
-```
-
-**Response with AI Detection:**
-```json
-{
-  "success": true,
-  "data": {
-    "trustScore": 42,
-    "riskLevel": "Medium",
-    "aiGenerated": true,
-    "aiGeneratedProbability": 87,
-    "aiGenerationIndicators": [
-      "Perfect symmetry suggesting digital generation",
-      "Unnatural skin texture smoothness"
-    ],
-    "authenticityMarkers": [],
-    "finalVerdict": "Image shows strong indicators of AI generation",
-    "recommendedAction": "Do not use as evidence",
-    "explanation": "AI analysis detected patterns..."
-  }
-}
-```
-
-### Video Analysis (with Deepfake Detection)
-```bash
-POST http://localhost:5000/api/analyze-video
-Content-Type: application/json
-
-{
-  "videoLink": "https://youtube.com/..."
-}
-```
-
-**Response with Deepfake Detection:**
-```json
-{
-  "success": true,
-  "data": {
-    "trustScore": 38,
-    "riskLevel": "High",
-    "aiGenerated": true,
-    "aiGeneratedProbability": 82,
-    "deepfakeSignals": [
-      "Unnatural facial movement patterns",
-      "Audio-visual sync anomalies"
-    ],
-    "authenticityMarkers": [],
-    "finalVerdict": "Video shows multiple deepfake indicators",
-    "recommendedAction": "Do not share. Report as manipulated."
-  }
-}
-```
-
 ## 📊 Trust Score System
 
 | Score Range | Risk Level | Color | Action |
@@ -281,21 +155,6 @@ Detects synthetic videos through:
 - **Eye Movement Patterns** - Unnatural blinking/movement
 - **Voice Synthesis Detection** - Robotic undertone analysis
 
-### Scoring Algorithm
-```javascript
-Trust Score = 100 - Risk Factors
-
-// AI Detection Impact
-if (aiGenerated) {
-  score -= 30;  // Significant penalty
-  score -= (probability - 50) * 0.5;
-}
-
-// Risk Factor Deductions
-score -= keyRedFlags.length * 10;
-score -= deepfakeSignals.length * 8;
-```
-
 ## 🎨 UI Features
 
 - **Modern SaaS Design** - Clean, professional interface
@@ -310,68 +169,6 @@ score -= deepfakeSignals.length * 8;
 - **AI Detection Banners** - Prominent AI vs Real display
 - **Confidence Meters** - Animated probability bars
 
-## 🗄️ Database Schema (MongoDB)
-
-```javascript
-{
-  type: 'email' | 'link' | 'image' | 'video',
-  input: String,
-  result: {
-    trustScore: Number,
-    riskLevel: String,
-    keyRedFlags: [String],
-    deepfakeSignals: [String],
-    aiGenerated: Boolean,
-    aiGeneratedProbability: Number,
-    aiGenerationIndicators: [String],
-    authenticityMarkers: [String],
-    internetInsights: {
-      similarCases: String,
-      credibility: String,
-      userReports: String,
-      overallSentiment: String
-    },
-    finalVerdict: String,
-    recommendedAction: String,
-    explanation: String
-  },
-  timestamp: Date
-}
-```
-
-## 🛠️ MiniMax API Integration
-
-The application uses MiniMax-2.7 API with structured prompts:
-
-```javascript
-// Example Prompt Structure
-const prompt = `Analyze the following IMAGE for authenticity and AI generation.
-
-CRITICAL: Determine if this image is AI-generated or AUTHENTIC.
-
-Return your analysis in this exact JSON format:
-{
-  "trustScore": [0-100],
-  "riskLevel": "Low|Medium|High",
-  "aiGenerated": [true|false],
-  "aiGeneratedProbability": [0-100],
-  "aiGenerationIndicators": [...],
-  "authenticityMarkers": [...],
-  ...
-}
-
-Content to analyze:
-${content}`;
-```
-
-## 🔒 Security Features
-
-- ✅ CORS enabled for API protection
-- ✅ Input validation on all endpoints
-- ✅ Error handling with user-friendly messages
-- ✅ Secure API key management
-- ✅ Rate limiting recommended for production
-
 ## 📱 Responsive Design
 
 | Device | Layout |
@@ -379,28 +176,6 @@ ${content}`;
 | Desktop | Full sidebar navigation |
 | Tablet | Collapsible sidebar |
 | Mobile | Hamburger menu with overlay |
-
-## 🚀 Deployment
-
-### Frontend (Vercel)
-```bash
-cd client
-vercel
-```
-
-### Backend (Railway/Render/Heroku)
-```bash
-cd server
-# Deploy to your preferred platform
-```
-
-### Environment Variables for Production
-```env
-MINIMAX_API_KEY=your-production-api-key
-MINIMAX_API_URL=https://api.minimax.chat/v1/text/chatcompletion_pro
-PORT=5000
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/proofly-ai
-```
 
 ## 🐛 Troubleshooting
 
@@ -430,10 +205,6 @@ npm install
 - [ ] Browser extension
 - [ ] Mobile app (React Native)
 
-## 📄 License
-
-MIT License - feel free to use for personal or commercial projects.
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -451,7 +222,7 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ using Next.js, Express, and MiniMax AI**
+**Built with ❤️ By Tanmay Joshi**
 
 **Version:** 1.0.0  
 **Last Updated:** 2026-03-28
