@@ -54,8 +54,8 @@ export default function ClientLayout({ children }) {
         setIsSidebarOpen={setIsSidebarOpen}
       />
       <HamburgerButton isOpen={isSidebarOpen} onClick={toggleSidebar} />
-      <main className="flex-1 min-h-screen lg:ml-64 transition-all duration-300">
-        <div className={`pt-16 px-4 lg:px-8 ${isSidebarOpen ? 'lg:ml-0' : ''}`}>
+      <main className="flex-1 min-h-screen lg:ml-64">
+        <div className="pt-16 px-4 lg:px-8 pb-8">
           {children}
         </div>
       </main>
