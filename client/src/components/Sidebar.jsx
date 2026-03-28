@@ -11,6 +11,7 @@ import {
   Shield,
   Moon,
   Sun,
+  Menu,
   Zap
 } from 'lucide-react';
 import { clsx } from 'clsx';
