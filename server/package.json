@@ -1,0 +1,17 @@
+{
+  "name": "proofly-ai-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "mongoose": "^8.3.2",
+    "dotenv": "^16.4.5",
+    "axios": "^1.6.8",
+    "multer": "^1.4.5-lts.1"
+  }
+}
