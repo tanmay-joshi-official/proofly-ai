@@ -1,11 +1,18 @@
 import axios from 'axios';
 
 const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY;
-const MINIMAX_API_URL = process.env.MINIMAX_API_URL || 'https://api.minimax.chat/v1/text/chatcompletion_pro';
+const MINIMAX_API_URL = process.env.MINIMAX_API_URL || 'https://api.minimax.io/v1/text/chatcompletion_v2';
 const GROUP_ID = process.env.GROUP_ID;
 
 export const analyzeWithMinimax = async (prompt) => {
   try {
+    if (!MINIMAX_API_KEY || !GROUP_ID) {
+      throw new Error(`Missing config: API_KEY=${MINIMAX_API_KEY ? 'set' : 'undefined'}, GROUP_ID=${GROUP_ID}`);
+    }
+    
+    console.log('Sending request to:', `${MINIMAX_API_URL}?groupid=${GROUP_ID}`);
+    console.log('API Key (first 20 chars):', MINIMAX_API_KEY.substring(0, 20) + '...');
+    
     const response = await axios.post(
       `${MINIMAX_API_URL}?groupid=${GROUP_ID}`,
       {
@@ -25,6 +32,8 @@ export const analyzeWithMinimax = async (prompt) => {
         }
       }
     );
+    
+    console.log('API Response:', JSON.stringify(response.data, null, 2));
 
     if (response.data.choices && response.data.choices[0]) {
       return response.data.choices[0].message.content;

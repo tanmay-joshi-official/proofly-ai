@@ -2,12 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import emailRoutes from './routes/emailRoutes.js';
 import linkRoutes from './routes/linkRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
 import videoRoutes from './routes/videoRoutes.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
