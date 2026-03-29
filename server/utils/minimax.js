@@ -9,7 +9,7 @@ export const analyzeWithMinimax = async (prompt) => {
     const response = await axios.post(
       MINIMAX_API_URL,
       {
-        model: 'MiniMax-2.7B',
+        model: 'MiniMax-M2.7',
         messages: [
           {
             role: 'user',
