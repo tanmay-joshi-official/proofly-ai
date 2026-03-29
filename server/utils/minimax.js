@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY;
 const MINIMAX_API_URL = process.env.MINIMAX_API_URL || 'https://api.minimax.chat/v1/text/chatcompletion_pro';
+const GROUP_ID = process.env.GROUP_ID;
 
 export const analyzeWithMinimax = async (prompt) => {
   try {
@@ -20,15 +21,27 @@ export const analyzeWithMinimax = async (prompt) => {
       {
         headers: {
           'Authorization': `Bearer ${MINIMAX_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'GroupId': GROUP_ID
         }
       }
     );
 
-    return response.data.choices[0].message.content;
+    if (response.data.choices && response.data.choices[0]) {
+      return response.data.choices[0].message.content;
+    } else if (response.data.text) {
+      return response.data.text;
+    } else if (response.data.output) {
+      return response.data.output;
+    } else if (response.data.result) {
+      return response.data.result;
+    } else {
+      console.log('MiniMax Response:', JSON.stringify(response.data, null, 2));
+      throw new Error('Unexpected API response format');
+    }
   } catch (error) {
     console.error('MiniMax API Error:', error.response?.data || error.message);
-    throw new Error(error.response?.data?.error?.message || 'AI Analysis Failed');
+    throw new Error(error.response?.data?.base_resp?.status_msg || 'AI Analysis Failed');
   }
 };
 
