@@ -7,7 +7,7 @@ const GROUP_ID = process.env.GROUP_ID;
 export const analyzeWithMinimax = async (prompt) => {
   try {
     const response = await axios.post(
-      MINIMAX_API_URL,
+      `${MINIMAX_API_URL}?groupid=${GROUP_ID}`,
       {
         model: 'MiniMax-M2.7',
         messages: [
@@ -21,8 +21,7 @@ export const analyzeWithMinimax = async (prompt) => {
       {
         headers: {
           'Authorization': `Bearer ${MINIMAX_API_KEY}`,
-          'Content-Type': 'application/json',
-          'GroupId': GROUP_ID
+          'Content-Type': 'application/json'
         }
       }
     );
