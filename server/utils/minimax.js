@@ -1,20 +1,20 @@
 import axios from 'axios';
 
-const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY;
-const MINIMAX_API_URL = process.env.MINIMAX_API_URL || 'https://api.minimax.io/v1/text/chatcompletion_v2';
-const GROUP_ID = process.env.GROUP_ID;
-
 export const analyzeWithMinimax = async (prompt) => {
   try {
-    if (!MINIMAX_API_KEY || !GROUP_ID) {
-      throw new Error(`Missing config: API_KEY=${MINIMAX_API_KEY ? 'set' : 'undefined'}, GROUP_ID=${GROUP_ID}`);
+    const API_KEY = process.env.MINIMAX_API_KEY;
+    const API_URL = process.env.MINIMAX_API_URL || 'https://api.minimax.io/v1/text/chatcompletion_v2';
+    const GROUP_ID = process.env.GROUP_ID;
+    
+    if (!API_KEY || !GROUP_ID) {
+      throw new Error(`Missing config: API_KEY=${API_KEY ? 'set' : 'undefined'}, GROUP_ID=${GROUP_ID}`);
     }
     
-    console.log('Sending request to:', `${MINIMAX_API_URL}?groupid=${GROUP_ID}`);
-    console.log('API Key (first 20 chars):', MINIMAX_API_KEY.substring(0, 20) + '...');
+    console.log('Sending request to:', `${API_URL}?groupid=${GROUP_ID}`);
+    console.log('API Key (first 20 chars):', API_KEY.substring(0, 20) + '...');
     
     const response = await axios.post(
-      `${MINIMAX_API_URL}?groupid=${GROUP_ID}`,
+      `${API_URL}?groupid=${GROUP_ID}`,
       {
         model: 'MiniMax-M2.7',
         messages: [
@@ -27,7 +27,7 @@ export const analyzeWithMinimax = async (prompt) => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${MINIMAX_API_KEY}`,
+          'Authorization': `Bearer ${API_KEY}`,
           'Content-Type': 'application/json'
         }
       }

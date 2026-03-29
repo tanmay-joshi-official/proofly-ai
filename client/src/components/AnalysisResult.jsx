@@ -8,9 +8,17 @@ import ConfidenceMeter from './ConfidenceMeter';
 
 export default function AnalysisResult({ result, type }) {
   const showAIDetection = type === 'image' || type === 'video';
-  const isAIGenerated = result.aiGenerated === true || result.aiGeneratedProbability >= 50;
+  const isAIGenerated = result.aiGenerated === true || (result.aiGeneratedProbability >= 50);
   const aiConfidence = result.aiGeneratedProbability || (isAIGenerated ? 75 : 25);
   const realConfidence = 100 - aiConfidence;
+  
+  const displayScore = showAIDetection && isAIGenerated 
+    ? Math.min(result.trustScore, 100 - aiConfidence) 
+    : result.trustScore;
+  
+  const displayRiskLevel = showAIDetection && isAIGenerated 
+    ? (aiConfidence >= 70 ? 'High' : aiConfidence >= 40 ? 'Medium' : 'Low')
+    : result.riskLevel;
 
   return (
     <motion.div
@@ -21,9 +29,9 @@ export default function AnalysisResult({ result, type }) {
     >
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="flex flex-col items-center">
-          <TrustScore score={result.trustScore} riskLevel={result.riskLevel} />
+          <TrustScore score={displayScore} riskLevel={displayRiskLevel} />
           <div className="mt-6">
-            <RiskBadge level={result.riskLevel} />
+            <RiskBadge level={displayRiskLevel} />
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import express from 'express';
 import { analyzeWithMinimax, createAnalysisPrompt } from '../utils/minimax.js';
 import Analysis from '../models/Analysis.js';
 import { generateDeterministicResult } from '../utils/deterministicAnalysis.js';
+import { cleanText, cleanListItems, cleanExplanation } from '../utils/textCleaner.js';
 
 const router = express.Router();
 
@@ -48,14 +49,45 @@ ${content}`;
     try {
       const jsonMatch = aiResponse.match(/\{[\s\S]*?\}/);
       if (jsonMatch) {
-        result = JSON.parse(jsonMatch[0]);
+        let jsonStr = jsonMatch[0];
+        jsonStr = jsonStr.replace(/,(\s*[}\]])/g, '$1');
+        result = JSON.parse(jsonStr);
+        if (result.explanation) {
+          result.explanation = cleanExplanation(result.explanation);
+        }
+        if (result.finalVerdict) {
+          result.finalVerdict = cleanText(result.finalVerdict);
+        }
+        if (result.recommendedAction) {
+          result.recommendedAction = cleanText(result.recommendedAction);
+        }
+        if (result.aiGenerationIndicators) {
+          result.aiGenerationIndicators = cleanListItems(result.aiGenerationIndicators);
+        }
+        if (result.authenticityMarkers) {
+          result.authenticityMarkers = cleanListItems(result.authenticityMarkers);
+        }
+        if (result.keyRedFlags) {
+          result.keyRedFlags = cleanListItems(result.keyRedFlags);
+        }
+        if (result.deepfakeSignals) {
+          result.deepfakeSignals = cleanListItems(result.deepfakeSignals);
+        }
+        if (result.internetInsights) {
+          result.internetInsights.similarCases = cleanText(result.internetInsights.similarCases || '');
+          result.internetInsights.credibility = cleanText(result.internetInsights.credibility || '');
+          result.internetInsights.userReports = cleanText(result.internetInsights.userReports || '');
+        }
       } else {
         throw new Error('No valid JSON found');
       }
     } catch (parseError) {
       console.error('JSON Parse Error:', parseError);
+      console.error('AI Response:', aiResponse);
       result = generateDeterministicResult(content, 'image');
-      result.explanation = aiResponse.substring(0, 500);
+      result.keyRedFlags = result.keyRedFlags || [];
+      result.keyRedFlags.push('Unable to parse AI response - used fallback');
+      result.explanation = cleanExplanation(aiResponse.substring(0, 500));
     }
 
     const analysis = new Analysis({
